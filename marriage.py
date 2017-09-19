@@ -25,8 +25,6 @@ def read_people(input_file):
     if not input_file:
         exit(1)
 
-    K = []
-    L = []
 
     with open(input_file) as f:
         # read the number of matches from first line
@@ -66,9 +64,6 @@ def marriage(M, W):
                 continue
 
             # knight selects his next highest ranked lady to propose to
-            w_name = m.preferences[m.next_proposal]
-            w = next(w_ for w_ in W if w_.name == w_name)
-            m.next_proposal += 1
 
             if not w:
                 error.write("A lady with the name " + w_name + " could not be found.")
@@ -80,7 +75,6 @@ def marriage(M, W):
                 w.engaged_to.disengage()
                 Person.engage(m, w)
 
-    print_matches(M)  # print final matches
 
 
 def main():

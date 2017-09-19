@@ -61,11 +61,11 @@ def print_matches(M):
         else:
             out.write(m.name + " " + m.engaged_to.name + "\n")
 
-# FIX: some knights are not being engaged by end of algorithm
+
 def marriage(M, W):
     while any(not m.engaged_to and m.next_proposal < len(W) for m in M):
         for m in M:
-            if m.next_proposal >= len(W):
+            if m.engaged_to or m.next_proposal >= len(W):
                 continue
 
             # knight selects his next highest ranked lady to propose to
@@ -74,8 +74,8 @@ def marriage(M, W):
             m.next_proposal += 1
 
             if not w:
-                error.write("An unfortunate error has occurred.")
-                break
+                error.write("A lady with the name " + w_name + " could not be found.")
+                exit(1)
 
             if not w.engaged_to:
                 Person.engage(m, w)

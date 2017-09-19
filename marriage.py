@@ -1,4 +1,5 @@
 
+from sys import stdout as output
 from sys import argv
 
 class Person:
@@ -16,13 +17,19 @@ class Person:
         m.engaged_to = w
 
 
-def read_people(file):
+def read_people(input_file):
+    if not input_file:
+        exit(1)
+
     K = []
     L = []
 
-    with open(file) as f:
+    with open(input_file) as f:
         # read the number of matches from first line
         num_matches = int(f.readline())
+
+        if num_matches is not int:
+            exit(1)
 
         # read the knight, followed by his preferences
         for i, line in enumerate(f):
@@ -46,6 +53,11 @@ def read_people(file):
     return K, L
 
 
+def print_matches(matches):
+    for match in matches:
+        output(match[0], match[1])
+
+
 E = set()  # the final matches will be printed
 
 
@@ -59,13 +71,11 @@ def marriage(M, W):
             if not w.engaged_to:
                 Person.engage(m, w)
                 E.add((m.name, w.name))
-                print(m.name, "and", w.name, "are engaged.")
             elif w.rank_of(m) < w.rank_of(w.engaged_to):
                 E.remove((w.engaged_to.name, w.name))
                 E.add((m.name, w.name))
                 w.engaged_to.engaged_to = None
                 Person.engage(m, w)
-                print(w.name, "peferred", m.name, "and they are engaged.")
 
     print(E)  # print final matches
 

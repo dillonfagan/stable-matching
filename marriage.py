@@ -52,7 +52,7 @@ def read_people(input_file):
 
 def print_matches(matches):
     for match in matches:
-        sys.stdout.write(match[0] + " " + match[1])
+        sys.stdout.write(match[0] + " " + match[1] + "\n")
 
 
 E = set()  # the final matches will be printed
@@ -69,6 +69,9 @@ def marriage(M, W):
                 Person.engage(m, w)
                 E.add((m.name, w.name))
             elif w.rank_of(m) < w.rank_of(w.engaged_to):
+                if m.engaged_to:
+                    E.remove((m.name, m.engaged_to.name))
+                    m.engaged_to = None
                 E.remove((w.engaged_to.name, w.name))
                 E.add((m.name, w.name))
                 w.engaged_to.engaged_to = None

@@ -1,5 +1,5 @@
 
-from sys import stdout as output
+import sys
 from sys import argv
 
 class Person:
@@ -28,9 +28,6 @@ def read_people(input_file):
         # read the number of matches from first line
         num_matches = int(f.readline())
 
-        if num_matches is not int:
-            exit(1)
-
         # read the knight, followed by his preferences
         for i, line in enumerate(f):
             if i == 0:
@@ -55,7 +52,7 @@ def read_people(input_file):
 
 def print_matches(matches):
     for match in matches:
-        output(match[0], match[1])
+        sys.stdout.write(match[0] + " " + match[1])
 
 
 E = set()  # the final matches will be printed

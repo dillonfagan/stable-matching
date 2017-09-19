@@ -1,5 +1,6 @@
 
-import sys
+from sys import stdout as out
+from sys import stderr as error
 from sys import argv
 
 class Person:
@@ -11,6 +12,9 @@ class Person:
 
     def rank_of(self, person):
         return self.preferences.index(person.name)
+
+    def disengage(self):
+        self.engaged_to = None
 
     def engage(m, w):
         w.engaged_to = m
@@ -50,34 +54,36 @@ def read_people(input_file):
     return K, L
 
 
-def print_matches(matches):
-    for match in matches:
-        sys.stdout.write(match[0] + " " + match[1] + "\n")
+def print_matches(M):
+    for m in M:
+        if not m.engaged_to:
+            error.write(m.name + " is not engaged. \n")
+        else:
+            out.write(m.name + " " + m.engaged_to.name + "\n")
 
-
-E = set()  # the final matches will be printed
-
-
+# FIX: some knights are not being engaged by end of algorithm
 def marriage(M, W):
     while any(not m.engaged_to and m.next_proposal < len(W) for m in M):
         for m in M:
             if m.next_proposal >= len(W):
                 continue
-            w = W[m.next_proposal]  # woman on m's list to whom he hasn't proposed
+
+            # knight selects his next highest ranked lady to propose to
+            w_name = m.preferences[m.next_proposal]
+            w = next(w_ for w_ in W if w_.name == w_name)
             m.next_proposal += 1
+
+            if not w:
+                error.write("An unfortunate error has occurred.")
+                break
+
             if not w.engaged_to:
                 Person.engage(m, w)
-                E.add((m.name, w.name))
             elif w.rank_of(m) < w.rank_of(w.engaged_to):
-                if m.engaged_to:
-                    E.remove((m.name, m.engaged_to.name))
-                    m.engaged_to = None
-                E.remove((w.engaged_to.name, w.name))
-                E.add((m.name, w.name))
-                w.engaged_to.engaged_to = None
+                w.engaged_to.disengage()
                 Person.engage(m, w)
 
-    print_matches(E)  # print final matches
+    print_matches(M)  # print final matches
 
 
 def main():

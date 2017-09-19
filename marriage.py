@@ -77,7 +77,7 @@ def marriage(M, W):
                 w.engaged_to.engaged_to = None
                 Person.engage(m, w)
 
-    print(E)  # print final matches
+    print_matches(E)  # print final matches
 
 
 def main():

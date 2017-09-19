@@ -54,12 +54,9 @@ def read_people(input_file):
     return K, L
 
 
-def print_matches(M):
-    for m in M:
-        if not m.engaged_to:
-            error.write(m.name + " is not engaged. \n")
-        else:
-            out.write(m.name + " " + m.engaged_to.name + "\n")
+def print_matches(K):
+    for k in K:
+        out.write(k.name + " " + k.engaged_to.name + "\n")
 
 
 def marriage(M, W):
